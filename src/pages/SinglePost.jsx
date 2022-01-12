@@ -34,6 +34,17 @@ export default function SinglePost() {
     } catch (err) {}
   };
 
+  const handleUpdate = async (e) => {
+    try {
+      await axios.put(`/post/${post._id}`, {
+        username: user.username,
+        title,
+        desc,
+      });
+      setUpdateMode(false);
+    } catch (err) {}
+  };
+
   return (
     <div className="singlePost">
       <div className="singlePostWrapper">
@@ -51,8 +62,8 @@ export default function SinglePost() {
           />
         ) : (
           <h1 className="singlePostTitle">
-            {post.title}
-            {post.username === user.username && (
+            {title}
+            {user && post.username === user.username && (
               <div className="singlePostEdit">
                 <i
                   className="singlePostIcon far fa-edit"
@@ -85,7 +96,13 @@ export default function SinglePost() {
             onChange={(e) => setDesc(e.target.value)}
           />
         ) : (
-          <p className="singlePostDesc">{post.desc}</p>
+          <p className="singlePostDesc">{desc}</p>
+        )}
+
+        {updateMode && (
+          <button className="singlePostButton" onClick={handleUpdate}>
+            Update
+          </button>
         )}
       </div>
     </div>
